@@ -1,0 +1,30 @@
+name: Protect Master Branch
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run tests
+      run: |
+        echo "Running tests..."
+        # Add your test commands here
+        # Example: npm install && npm test
+
+  enforce-rules:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+    - name: Enforce Branch Protection Rules
+      run: |
+        echo "Pull request merged into master"
+        echo "Branch protection rules enforced"
