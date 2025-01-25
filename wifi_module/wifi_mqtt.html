@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wi-Fi Configuration</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            color: #333;
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wi-Fi&MQTT Config</h1>
+        <form id="myform">
+            <label for="wifi-ssid">Select Wi-Fi SSID:</label>
+            <select id="wifi-ssid" name="wifi-ssid">
+                
+            </select>
+
+            <label for="wifi-pass">WIFI</label>
+            <input type="text" id="wifi-pass" name="wifi-pass" placeholder="Enter your pass value here">
+
+            <label for="mqtt-hostname">MQTT</label>
+            <input type="text" id="mqtt-hostname" name="mqtt-hostname" placeholder="Enter your hostname here">
+            <input type="text" id="mqtt-topic" name="mqtt-topic" placeholder="Enter your topic here">
+
+            <button id="save" type="submit">Save</button>
+        </form>
+        <footer id="footer"></footer>
+    </div>
+    <script>
+    function get_base_url(){
+            return window.location.host.split(":")[0]
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+        event.preventDefault();  // Prevent the form from reloading the page
+          const response =  fetch("http://" + get_base_url() + ":80/ready")
+                .then(response => response.json())
+                .then(data => {
+                    load_data(data)
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                });
+        })
+
+        
+
+        document.getElementById("myform").addEventListener("submit", function(event){
+            event.preventDefault();  // Prevent the form from reloading the page
+            // WIFI
+            const password = document.getElementById("wifi-pass").value
+            const ssid = "hello world"
+            const selected_ssid_element = document.getElementById("wifi-ssid")
+            const selected_option = selected_ssid_element.options[selected_ssid_element.selectedIndex]
+            // MQTT configuraion
+            const hostname = document.getElementById("mqtt-hostname").value
+            const topic = document.getElementById("mqtt-topic").value
+             // Prepare the data to be sent in JSON format
+             const data = {
+                password: password,
+                ssid: selected_option.value,
+                hostname: hostname,
+                topic: topic
+            };
+            fetch("http://" + get_base_url() + ":80/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)  // Convert the data to a JSON string
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.debug(data.message)
+                update_footer(data.message)
+            })
+            
+        })
+
+        function update_footer(data){
+            const footer_elmt = document.getElementById("footer")
+            footer_elmt.innerHTML = data;
+        }
+
+       function load_data(data){
+            for(const ssid of data){
+                            if(ssid != ""){
+                                const wifi_tag = document.getElementById("wifi-ssid")
+                                const option = document.createElement("option")
+                                option.innerHTML = ssid
+                                option.value = ssid
+                                wifi_tag.appendChild(option)
+                            }
+                        }
+                    }
+    </script>
+
+</body>
+</html>
+
