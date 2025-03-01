@@ -7,10 +7,12 @@
     [
       "wifi_module/wifi.py",
       "wifi_module/wifi.py"
+    ],
+    [
+      "wifi_module/wifimngr.py",
+      "wifi_module/wifimngr.py"
     ]
   ],
   "deps": [
-    ["collections-defaultdict", "latest"],
-    ["os-path", "latest"]
   ]
 }
