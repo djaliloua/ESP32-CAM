@@ -12,7 +12,5 @@
       "wifi_module/wifimngr.py",
       "wifi_module/wifimngr.py"
     ]
-  ],
-  "deps": [
   ]
 }
