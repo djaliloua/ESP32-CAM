@@ -2,7 +2,7 @@
 
 # To Upload and start the app, do:
 > 1. Activate virtual env ```Adafruit/Scripts/Activate```
-> 2. To upload the files:  ```python "C:\Users\djali\PycharmProjects\iot_projects_esp32_module\Wifi\upload_files_mpremote.py" COM3 "C:\Users\djali\PycharmProjects\iot_projects_esp32_module\camera\Mqtt"```
+> 2. To upload the files:  ```python "C:\...\PycharmProjects\iot_projects_esp32_module\Wifi\upload_files_mpremote.py" COM3 "C:\....\PycharmProjects\iot_projects_esp32_module\camera\Mqtt"```
 > 3. To Start the app: ```mpremote run D:\esp32\camera\Mqtt\main.py```
 
 Azure Broker: "20.208.128.223" (Video can be accessed anywhere)

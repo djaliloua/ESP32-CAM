@@ -1,0 +1,9 @@
+{
+  "urls": [
+    ["wifi_module/__init__.py", "wifi_module/__init__.py"],
+    ["wifi_module/wifi.py", "wifi_module/wifi.py"]
+  ],
+  "deps": [
+  ],
+  "version": "0.2"
+}
